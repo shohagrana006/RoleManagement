@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Backend\{
+    DashboardController,
+    RollController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::group(['middleware'=>'auth','prefix'=>'dashboard'],function(){
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('role', RollController::class);
+});
 
 require __DIR__.'/auth.php';
